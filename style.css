@@ -1,0 +1,38 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f8f9fa;
+    color: #1f2937;
+}
+
+.hero-section {
+    background: linear-gradient(135deg, #eef6ff 0%, #ffffff 100%);
+}
+
+.hero-image {
+    max-height: 480px;
+    object-fit: cover;
+}
+
+.feature-icon {
+    width: 50px;
+    height: 50px;
+    display: grid;
+    place-items: center;
+    background: #e7f1ff;
+    border-radius: 12px;
+    font-size: 1.5rem;
+}
+
+.feature-list li {
+    margin-bottom: 0.75rem;
+    font-size: 1.05rem;
+    color: #374151;
+}
+
+.card {
+    border-radius: 18px;
+}
+
+.navbar-brand {
+    letter-spacing: 0.5px;
+}
