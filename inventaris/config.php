@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 declare(strict_types=1);
 
@@ -13,7 +13,10 @@ function loadEnv(string $file): void
         return;
     }
 
-    $lines = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    $lines = file(
+        $file,
+        FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES
+    );
 
     if ($lines === false) {
         return;
@@ -38,7 +41,7 @@ function loadEnv(string $file): void
         $value = trim($value, "\"'");
 
         $_ENV[$name] = $value;
-        putenv("$name=$value");
+        putenv("{$name}={$value}");
     }
 }
 
@@ -51,16 +54,25 @@ function env(string $key, mixed $default = null): mixed
 {
     $value = $_ENV[$key] ?? getenv($key);
 
-    return ($value === false || $value === null || $value === '')
-        ? $default
-        : $value;
+    if ($value === false || $value === null || $value === '') {
+        return $default;
+    }
+
+    return $value;
 }
 
+/**
+ * Application configuration.
+ */
 define('APP_NAME', env('APP_NAME', 'Inventory System'));
 define('APP_ENV', env('APP_ENV', 'development'));
+
 define(
     'APP_DEBUG',
-    filter_var(env('APP_DEBUG', false), FILTER_VALIDATE_BOOLEAN)
+    filter_var(
+        env('APP_DEBUG', false),
+        FILTER_VALIDATE_BOOLEAN
+    )
 );
 
 define(
