@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 class App
@@ -14,18 +13,20 @@ class App
 
         if (!empty($url[0])) {
             $candidate = ucfirst($url[0]) . 'Controller';
-            $controllerPath = ROOT_PATH
-                . '/app/controllers/'
-                . $candidate
-                . '.php';
+            $controllerPath = ROOT_PATH . '/app/controllers/' . $candidate . '.php';
 
-            if (file_exists($controllerPath)) {
+            if (is_file($controllerPath)) {
                 $this->controller = $candidate;
                 unset($url[0]);
             } else {
                 $this->notFound();
                 return;
             }
+        }
+
+        if (!class_exists($this->controller)) {
+            $this->notFound();
+            return;
         }
 
         $this->controller = new $this->controller();
@@ -50,22 +51,23 @@ class App
 
     public function parseURL(): array
     {
-        if (isset($_GET['url'])) {
-            $url = rtrim($_GET['url'], '/');
+        $url = $_GET['url'] ?? parse_url(
+            $_SERVER['REQUEST_URI'] ?? '/',
+            PHP_URL_PATH
+        );
 
-            return explode(
-                '/',
-                filter_var($url, FILTER_SANITIZE_URL)
-            );
+        $url = trim((string) $url, '/');
+
+        if ($url === '') {
+            return [];
         }
 
-        return [];
+        return explode('/', filter_var($url, FILTER_SANITIZE_URL));
     }
 
     private function notFound(): void
     {
         http_response_code(404);
-
-        echo '<h1>404 Not Found</h1>';
+        echo '<h1>404 - Halaman tidak ditemukan</h1>';
     }
 }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-define('ROOT_PATH', __DIR__);
+if (!defined('ROOT_PATH')) { define('ROOT_PATH', __DIR__); }
 
 /**
  * Load environment variables from .env.
